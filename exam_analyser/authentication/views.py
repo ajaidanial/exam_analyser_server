@@ -2,7 +2,9 @@ from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.viewsets import ModelViewSet
 
+from exam_analyser.authentication.models import User
 from exam_analyser.authentication.serializers import UserSerializer
 
 
@@ -42,3 +44,10 @@ class RefreshView(APIView):
         return Response(
             UserSerializer(request.user, context=self.get_renderer_context()).data,
         )
+
+
+class UserViewSet(ModelViewSet):
+    """ViewSet to handle the CRUD operations for the users like students and teachers."""
+
+    serializer_class = UserSerializer
+    queryset = User.objects.all()
