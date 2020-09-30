@@ -21,6 +21,10 @@ urlpatterns = [
         "auth/",
         include("exam_analyser.authentication.urls", namespace="authentication"),
     ),
+    path(
+        "examination/",
+        include("exam_analyser.examination.urls", namespace="examination"),
+    ),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # static files serving when in local dev
