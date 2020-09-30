@@ -1,0 +1,53 @@
+version: "3"
+
+volumes:
+  app_postgres_data: { }
+
+services:
+  django: &django
+    build:
+      context: .
+      dockerfile: ./compose/Dockerfile-django
+    depends_on:
+      - postgres
+    volumes:
+      - .:/app:z
+    env_file:
+      - ./.envs/.local
+    ports:
+      - "8000:8000"
+    command: /scripts/start-django-local
+
+  postgres:
+    image: "postgres:12.3"
+    volumes:
+      - app_postgres_data:/var/lib/postgresql/data:Z
+    env_file:
+      - ./.envs/.local
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:5.0
+
+  celeryworker:
+    <<: *django
+    depends_on:
+      - redis
+      - postgres
+    ports: [ ]
+    command: /scripts/start-celeryworker
+
+  celerybeat:
+    <<: *django
+    depends_on:
+      - redis
+      - postgres
+    ports: [ ]
+    command: /scripts/start-celerybeat
+
+  celeryflower:
+    <<: *django
+    ports:
+      - "5555:5555"
+    command: /scripts/start-celeryflower
