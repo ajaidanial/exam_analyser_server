@@ -21,3 +21,11 @@ POSTGRES_PORT=5432
 POSTGRES_DB=exam_analyser
 POSTGRES_USER=CDvxBmWFucAwZKuWgkzVjQpCrPCOkMRJ
 POSTGRES_PASSWORD=AAh88njxFgFoC8k7U7lZFnFCCQmVHq51VmqYytg9MtWfNYZw3GicLxl81lNqljbL
+
+# Django Admin User Credentials
+# ------------------------------------------------------------------------------
+DJANGO_ADMIN_USERNAME=
+DJANGO_ADMIN_PASSWORD=
+DJANGO_ADMIN_FIRST_NAME=
+DJANGO_ADMIN_LAST_NAME=
+DJANGO_ADMIN_EMAIL=

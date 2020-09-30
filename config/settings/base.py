@@ -87,6 +87,13 @@ AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
 ]
 AUTH_USER_MODEL = "authentication.User"
+DJANGO_ADMIN = {
+    "username": env.str("DJANGO_ADMIN_USERNAME", default="admin"),
+    "password": env.str("DJANGO_ADMIN_PASSWORD", default="admin"),
+    "first_name": env.str("DJANGO_ADMIN_FIRST_NAME", default="Admin"),
+    "last_name": env.str("DJANGO_ADMIN_LAST_NAME", default="User"),
+    "email": env.str("DJANGO_ADMIN_EMAIL", default="ajaidanial@gmail.com"),
+}
 
 # PASSWORDS
 # ------------------------------------------------------------------------------
