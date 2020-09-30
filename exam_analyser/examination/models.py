@@ -9,4 +9,4 @@ class Subject(BaseModel):
     and is used in mapping the exams dynamically.
     """
 
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
