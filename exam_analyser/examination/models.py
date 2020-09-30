@@ -23,3 +23,9 @@ class Exam(BaseModel):
     """
 
     name = models.CharField(max_length=255, unique=True)
+
+
+class QuestionCategory(BaseModel):
+    """Model that holds the question category data. This is used while creating questions."""
+
+    name = models.CharField(max_length=255, unique=True)
