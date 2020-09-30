@@ -59,6 +59,7 @@ DJANGO_APPS = [
 THIRD_PARTY_APPS = [
     "django_celery_beat",
     "rest_framework",
+    "rest_framework.authtoken",
     "phonenumber_field",
     "corsheaders",
     "django_extensions",
@@ -226,7 +227,19 @@ CELERY_TASK_EAGER_PROPAGATES = True
 
 # django-reset-framework
 # -------------------------------------------------------------------------------
-REST_FRAMEWORK = {}
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.TokenAuthentication"
+    ],
+    "DEFAULT_RENDERER_CLASSES": [
+        "rest_framework.renderers.JSONRenderer",
+        "rest_framework.renderers.BrowsableAPIRenderer",
+    ],
+    "DEFAULT_PARSER_CLASSES": ["rest_framework.parsers.JSONParser"],
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticated",
+    ],
+}
 
 # Security
 # ------------------------------------------------------------------------------

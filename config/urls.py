@@ -17,7 +17,10 @@ urlpatterns = [
         lambda r: HttpResponse("pong!"),
         name="ping",
     ),
-    # Your stuff: custom urls includes go here
+    path(
+        "auth/",
+        include("exam_analyser.authentication.urls", namespace="authentication"),
+    ),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # static files serving when in local dev
