@@ -11,7 +11,7 @@ domains=(testing.ajaidanial.wtf)
 rsa_key_size=4096
 data_path="./compose/certbot"
 email="ajaidanial@gmail.com"
-staging=1 # Set to 1 if you're testing your setup to avoid hitting request limits
+staging=0 # Set to 1 if you're testing your setup to avoid hitting request limits
 
 # download TLS parameters
 if [ ! -e "$data_path/conf/options-ssl-nginx.conf" ] || [ ! -e "$data_path/conf/ssl-dhparams.pem" ]; then
