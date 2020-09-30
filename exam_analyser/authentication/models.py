@@ -1,4 +1,5 @@
 from django.contrib.auth.models import AbstractUser
+from django.db import models
 from model_utils import Choices
 from model_utils.fields import StatusField
 
@@ -15,6 +16,10 @@ class User(AbstractUser):
     other data and methods related to the application.
     """
 
+    class Meta:
+        default_related_name = "related_users"
+
     ROLE_CHOICES = Choices(*ROLES["options"])
 
     role = StatusField(choices_name="ROLE_CHOICES", default=ROLES["default_option"])
+    linked_subjects = models.ManyToManyField(to="examination.Subject")
