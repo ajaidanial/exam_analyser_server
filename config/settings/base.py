@@ -69,7 +69,10 @@ THIRD_PARTY_APPS = [
     "silk",
     "django_user_agents",
 ]
-LOCAL_APPS = ["exam_analyser.base", "exam_analyser.authentication"]
+LOCAL_APPS = [
+    "exam_analyser.base",
+    "exam_analyser.authentication",
+]
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 # MIGRATIONS
@@ -81,7 +84,7 @@ MIGRATION_MODULES = {"sites": "exam_analyser.contrib.sites.migrations"}
 AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
 ]
-# AUTH_USER_MODEL = "authentication.User" # TODO
+AUTH_USER_MODEL = "authentication.User"
 
 # PASSWORDS
 # ------------------------------------------------------------------------------
