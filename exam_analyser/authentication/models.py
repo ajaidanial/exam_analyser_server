@@ -3,10 +3,11 @@ from django.db import models
 from model_utils import Choices
 from model_utils.fields import StatusField
 
+from exam_analyser.base.models import BaseModel
 from exam_analyser.configurations import ROLES
 
 
-class User(AbstractUser):
+class User(BaseModel, AbstractUser):
     """
     User model for the entire application. This is used to denote the following user types:
         1. Admin (super user)
