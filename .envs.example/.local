@@ -1,0 +1,23 @@
+# General
+# ------------------------------------------------------------------------------
+USE_DOCKER=yes
+IPYTHONDIR=/app/.ipython
+DJANGO_DEBUG=True
+DJANGO_SECRET_KEY=secret
+
+# Redis
+# ------------------------------------------------------------------------------
+REDIS_URL=redis://redis:6379/0
+
+# Celery
+# ------------------------------------------------------------------------------
+CELERY_FLOWER_USER=admin
+CELERY_FLOWER_PASSWORD=admin
+
+# PostgreSQL
+# ------------------------------------------------------------------------------
+POSTGRES_HOST=postgres
+POSTGRES_PORT=5432
+POSTGRES_DB=exam_analyser
+POSTGRES_USER=CDvxBmWFucAwZKuWgkzVjQpCrPCOkMRJ
+POSTGRES_PASSWORD=AAh88njxFgFoC8k7U7lZFnFCCQmVHq51VmqYytg9MtWfNYZw3GicLxl81lNqljbL

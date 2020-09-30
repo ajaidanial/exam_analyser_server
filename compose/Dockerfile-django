@@ -1,0 +1,26 @@
+FROM python:3.7-slim-buster
+
+ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE 1
+
+# Initial update & initial dependencies
+RUN apt-get update \
+    && apt-get install -y build-essential curl wkhtmltopdf xvfb libpq-dev gettext
+
+# cleaning up unused files
+RUN apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
+    && rm -rf /var/lib/apt/lists/*
+
+# install requirements
+COPY ./requirements.txt /requirements.txt
+RUN pip install -r /requirements.txt
+
+# docker scripts
+COPY ./compose/scripts/* /scripts/
+# make them executable
+RUN sed -i 's/\r$//g' /scripts/*
+RUN chmod +x /scripts/*
+
+WORKDIR /app
+
+ENTRYPOINT ["/scripts/entrypoint-django"]

@@ -1,0 +1,87 @@
+# Settings Dependencies
+# ------------------------------------------------------------------------------
+pytz==2020.1
+Pillow==7.2.0
+argon2-cffi==20.1.0
+
+# Project Dependencies
+# ------------------------------------------------------------------------------
+redis==3.5.3
+hiredis==1.1.0
+celery==4.4.6
+django-celery-beat==2.0.0
+flower==0.9.5
+django-redis==4.12.1
+
+# Third Party Utilities
+# ------------------------------------------------------------------------------
+python-slugify==4.0.1
+django-phonenumber-field[phonenumbers]
+django-multiselectfield==0.1.12
+django-model-utils==4.0.0
+django-debug-toolbar==3.1
+django-extensions==3.0.9
+arrow==0.15.7
+django-silk==4.1.0
+pyyaml==5.3.1
+ua-parser==0.10.0
+user-agents==2.2.0
+django-user-agents==0.4.0
+num2words==0.5.10
+
+# Documentation
+# ------------------------------------------------------------------------------
+drf-yasg==1.17.1
+
+# Postgres & Django Connectivity
+# ------------------------------------------------------------------------------
+psycopg2==2.8.6
+
+# Django
+# ------------------------------------------------------------------------------
+django==3.0.10
+django-environ==0.4.5
+django-session-timeout==0.1.0
+django-samesite-none==0.0.2
+django-cors-headers==3.5.0
+
+# Django REST Framework
+# ------------------------------------------------------------------------------
+djangorestframework==3.11.1
+django-filter==2.2.0
+
+# Excel Action Helpers
+# ------------------------------------------------------------------------------
+xlrd==1.2.0
+xlwt==1.3.0
+pandas==1.0.4
+openpyxl==3.0.3
+
+# PDF Action Helpers
+# ------------------------------------------------------------------------------
+pdfkit==0.6.1
+
+# Database Schema Export
+# ------------------------------------------------------------------------------
+graphviz==0.14.1
+pydotplus==2.0.2
+
+# Debugging & Testing
+# ------------------------------------------------------------------------------
+Werkzeug==1.0.1
+ipdb==0.13.2
+
+# Loading Fake Data
+# ------------------------------------------------------------------------------
+faker==4.0.3
+
+# Code quality
+# ------------------------------------------------------------------------------
+black==20.8b1
+
+# Deployement
+# ------------------------------------------------------------------------------
+gunicorn==20.0.4
+whitenoise==5.2.0
+uvicorn==0.11.8
+watchgod==0.6
