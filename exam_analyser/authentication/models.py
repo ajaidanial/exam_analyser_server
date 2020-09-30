@@ -1,3 +1,4 @@
+from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from model_utils import Choices
@@ -24,3 +25,10 @@ class User(BaseModel, AbstractUser):
 
     role = StatusField(choices_name="ROLE_CHOICES", default=ROLES["default_option"])
     linked_subjects = models.ManyToManyField(to="examination.Subject")
+
+    def set_password(self, raw_password):
+        """Hashed the input raw password and saves it to the user instance."""
+
+        self.password = make_password(raw_password)
+        self._password = raw_password
+        self.save()

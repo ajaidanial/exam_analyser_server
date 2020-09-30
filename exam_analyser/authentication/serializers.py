@@ -21,7 +21,27 @@ class UserSerializer(ModelSerializer):
         ]
         extra_kwargs = {
             "password": {"write_only": True},
+            "email": {"required": True},
+            "first_name": {"required": True},
+            "last_name": {"required": True},
         }
+
+    def create(self, validated_data):
+        user = super(UserSerializer, self).create(validated_data)
+
+        # password should be passed on create | user will be created without hashing password
+        user.set_password(validated_data["password"])
+
+        return user
+
+    def update(self, instance, validated_data):
+        user = super(UserSerializer, self).update(instance, validated_data)
+
+        # password may or may not be passed while update | if passed | hash and save it
+        if "password" in validated_data.keys():
+            user.set_password(validated_data["password"])
+
+        return user
 
     def to_representation(self, instance):
         data = super(UserSerializer, self).to_representation(instance)
