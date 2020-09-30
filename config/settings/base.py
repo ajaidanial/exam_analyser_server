@@ -69,7 +69,7 @@ THIRD_PARTY_APPS = [
     "silk",
     "django_user_agents",
 ]
-LOCAL_APPS = ["exam_analyser.base"]
+LOCAL_APPS = ["exam_analyser.base", "exam_analyser.authentication"]
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 # MIGRATIONS
