@@ -8,6 +8,7 @@ class Command(BaseCommand):
     help = "Creates the applications initial default data. Used for dev purpose."
 
     def handle(self, *args, **kwargs):
+        self.stdout.write("Creating initial app data.")
 
         for config in INITIAL_DATA_CREATION_CONFIGURATION:
 
@@ -19,3 +20,5 @@ class Command(BaseCommand):
                 model.objects.filter(**single_data).delete()
                 # re create to avoid any breakages
                 model.objects.create(**single_data)
+
+        self.stdout.write("Initial app data created.")
