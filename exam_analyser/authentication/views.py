@@ -1,6 +1,7 @@
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from exam_analyser.authentication.serializers import UserSerializer
 
@@ -27,4 +28,17 @@ class LoginView(ObtainAuthToken):
                     user, context=self.get_renderer_context()
                 ).data,
             }
+        )
+
+
+class RefreshView(APIView):
+    """
+    View to refresh or get the currently logged in users data. This cannot be accessed if the users
+    token is not present. So the access control enters this view, only if the token is present and valid.
+    This just send back the users serializer data.
+    """
+
+    def get(self, request, *args, **kwargs):
+        return Response(
+            UserSerializer(request.user, context=self.get_renderer_context()).data,
         )
