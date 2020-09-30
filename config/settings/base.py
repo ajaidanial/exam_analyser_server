@@ -8,7 +8,7 @@ ROOT_DIR = Path(__file__).parents[2]
 APPS_DIR = ROOT_DIR / "exam_analyser"
 env = environ.Env()
 
-if env.bool("DJANGO_READ_DOT_ENV_FILE", default=True):
+if env.bool("DJANGO_READ_DOT_ENV_FILE", default=False):
     # OS environment variables take precedence over variables from .env
     env.read_env(str(ROOT_DIR / ".env"))
 
@@ -29,7 +29,7 @@ INTERNAL_IPS = ["127.0.0.1"]
 
 # Docker
 # ------------------------------------------------------------------------------
-if env("USE_DOCKER", default="yes") == "yes":
+if env("USE_DOCKER", default="no") == "yes":
     import socket
 
     hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
