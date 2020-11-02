@@ -29,3 +29,34 @@ class QuestionCategory(BaseModel):
     """Model that holds the question category data. This is used while creating questions."""
 
     name = models.CharField(max_length=255, unique=True)
+
+
+class QuestionPaper(BaseModel):
+    """
+    Model that holds the QuestionPaper data under a given exam and a subject.
+    This is unique under tha same. There are questions linked under the question paper.
+    """
+
+    class Meta(BaseModel.Meta):
+        unique_together = ("exam", "subject")
+        default_related_name = "related_question_papers"
+
+    name = models.TextField()
+    description = models.TextField()
+    exam = models.ForeignKey(to="examination.Exam", on_delete=models.CASCADE)
+    subject = models.ForeignKey(to="examination.Subject", on_delete=models.CASCADE)
+
+
+class Question(BaseModel):
+    """Model that holds the Question data under a given question paper."""
+
+    class Meta(BaseModel.Meta):
+        unique_together = ("name", "question_paper")
+        default_related_name = "related_questions"
+
+    name = models.TextField()
+    description = models.TextField(null=True, default=None)
+    question_categories = models.ManyToManyField(to="examination.QuestionCategory")
+    question_paper = models.ForeignKey(
+        to="examination.QuestionPaper", on_delete=models.CASCADE
+    )

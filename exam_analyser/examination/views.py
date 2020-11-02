@@ -3,11 +3,19 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 
-from exam_analyser.examination.models import Subject, Exam, QuestionCategory
+from exam_analyser.examination.models import (
+    Subject,
+    Exam,
+    QuestionCategory,
+    QuestionPaper,
+    Question,
+)
 from exam_analyser.examination.serializers import (
     SubjectSerializer,
     ExamSerializer,
     QuestionCategorySerializer,
+    QuestionPaperSerializer,
+    QuestionSerializer,
 )
 
 
@@ -30,6 +38,20 @@ class QuestionCategoryViewSet(ModelViewSet):
 
     serializer_class = QuestionCategorySerializer
     queryset = QuestionCategory.objects.all()
+
+
+class QuestionPaperViewSet(ModelViewSet):
+    """ViewSet to handle the CRUD operations for the QuestionPaper model."""
+
+    serializer_class = QuestionPaperSerializer
+    queryset = QuestionPaper.objects.all()
+
+
+class QuestionViewSet(ModelViewSet):
+    """ViewSet to handle the CRUD operations for the Question model."""
+
+    serializer_class = QuestionSerializer
+    queryset = Question.objects.all()
 
 
 class ExamSubjectOverviewView(APIView):
