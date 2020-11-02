@@ -1,3 +1,6 @@
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 
 from exam_analyser.examination.models import Subject, Exam, QuestionCategory
@@ -27,3 +30,15 @@ class QuestionCategoryViewSet(ModelViewSet):
 
     serializer_class = QuestionCategorySerializer
     queryset = QuestionCategory.objects.all()
+
+
+class ExamSubjectOverviewView(APIView):
+    """
+    This view displays the data for the exam, subject and question paper view.
+    This gives the data for the table like view through which the question paper can be viewed
+    or created. This will include the exam, subject and question paper.
+    """
+
+    def get(self, request, **kwargs):
+        overview_data = {}
+        return Response(data=overview_data, status=status.HTTP_200_OK)

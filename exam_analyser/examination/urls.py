@@ -1,3 +1,4 @@
+from django.urls import path
 from rest_framework.routers import SimpleRouter
 
 from . import views
@@ -13,4 +14,10 @@ router.register(
     basename="question_category_viewset",
 )
 
-urlpatterns = [] + router.urls
+urlpatterns = [
+    path(
+        "exam-subject-overview/",
+        views.ExamSubjectOverviewView.as_view(),
+        name="exam_subject_overview_view",
+    )
+] + router.urls
