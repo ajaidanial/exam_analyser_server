@@ -57,4 +57,11 @@ class QuestionSerializer(ModelSerializer):
 
     class Meta:
         model = Question
-        fields = ["id", "name", "description", "question_categories", "question_paper"]
+        fields = [
+            "id",
+            "name",
+            "description",
+            "question_categories",
+            "question_paper",
+            "max_marks",
+        ]

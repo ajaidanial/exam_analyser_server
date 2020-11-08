@@ -60,3 +60,4 @@ class Question(BaseModel):
     question_paper = models.ForeignKey(
         to="examination.QuestionPaper", on_delete=models.CASCADE
     )
+    max_marks = models.PositiveIntegerField()
