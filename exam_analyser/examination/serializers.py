@@ -30,7 +30,7 @@ class QuestionCategorySerializer(ModelSerializer):
 
     class Meta:
         model = QuestionCategory
-        fields = ["id", "name"]
+        fields = ["id", "name", "subject"]
 
 
 class QuestionPaperSerializer(ModelSerializer):

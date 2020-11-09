@@ -29,6 +29,7 @@ class QuestionCategory(BaseModel):
     """Model that holds the question category data. This is used while creating questions."""
 
     name = models.CharField(max_length=255, unique=True)
+    subject = models.ForeignKey(to="examination.Subject", on_delete=models.CASCADE)
 
 
 class QuestionPaper(BaseModel):

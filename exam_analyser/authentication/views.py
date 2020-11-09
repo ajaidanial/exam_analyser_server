@@ -51,3 +51,4 @@ class UserViewSet(ModelViewSet):
 
     serializer_class = UserSerializer
     queryset = User.objects.all()
+    filterset_fields = ["role"]

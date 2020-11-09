@@ -21,16 +21,16 @@ SUBJECTS = [
 ]
 
 QUESTION_CATEGORIES = [
-    {"name": "Programming"},
-    {"name": "Logical Thinking"},
-    {"name": "Problem Solving"},
-    {"name": "Logical Reasoning"},
-    {"name": "Moral Values"},
-    {"name": "Tinkering"},
-    {"name": "Experimenting"},
-    {"name": "Plant Anatomy"},
-    {"name": "Zoology"},
-    {"name": "Animal Anatomy"},
+    {"name": "Programming", "subject": "Computer Science"},
+    {"name": "Logical Thinking", "subject": "Accountants"},
+    {"name": "Problem Solving", "subject": "Accountants"},
+    {"name": "Logical Reasoning", "subject": "Economics"},
+    {"name": "Moral Values", "subject": "Economics"},
+    {"name": "Tinkering", "subject": "Chemistry"},
+    {"name": "Experimenting", "subject": "Chemistry"},
+    {"name": "Plant Anatomy", "subject": "Biology"},
+    {"name": "Zoology", "subject": "Biology"},
+    {"name": "Animal Anatomy", "subject": "Biology"},
 ]
 
 # main initial data creation config | used to create the data dynamically
