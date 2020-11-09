@@ -1,17 +1,24 @@
+from typing import Union
+
 from rest_framework import status
+from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 
 from exam_analyser.authentication.models import User
 from exam_analyser.base.views import CheckParamsMixin
-from exam_analyser.examination.helpers import write_data_to_excel_and_get_public_url
+from exam_analyser.examination.helpers import (
+    write_data_to_excel_and_get_public_url,
+    get_data_as_list_of_dict_from_excel_file,
+)
 from exam_analyser.examination.models import (
     Subject,
     Exam,
     QuestionCategory,
     QuestionPaper,
     Question,
+    UserQuestionMarkTracker,
 )
 from exam_analyser.examination.serializers import (
     SubjectSerializer,
@@ -19,6 +26,7 @@ from exam_analyser.examination.serializers import (
     QuestionCategorySerializer,
     QuestionPaperSerializer,
     QuestionSerializer,
+    MarksUploadSerializer,
 )
 
 
@@ -141,6 +149,8 @@ class QuestionPaperMarksUploadView(CheckParamsMixin, APIView):
         2. On get request, returns the upload help file for the POST request.
     """
 
+    parser_classes = [MultiPartParser, FormParser]
+
     def get(self, request, **kwargs):
         """On get, returns the upload help file used for the post request."""
 
@@ -164,6 +174,48 @@ class QuestionPaperMarksUploadView(CheckParamsMixin, APIView):
             data_to_write_in_excel, request
         )
         return Response(data={"url": public_url})
+
+    def post(self, request, **kwargs):
+        """On post, updates the students marks under each question."""
+
+        self.init_params_for_view(request)
+
+        serializer = MarksUploadSerializer(
+            data=request.data, context={"view": self, "request": request}
+        )
+        serializer.is_valid(raise_exception=True)
+
+        file_data = get_data_as_list_of_dict_from_excel_file(
+            excel_file_config={
+                "file_contents": serializer.validated_data["file"].read()
+            },
+            input_indexes_and_dict_keys={
+                0: "username",
+            },
+            read_other_excel_data=True,
+        )
+
+        question_paper = QuestionPaper.objects.get(
+            id=request.query_params.get("question_paper_id")
+        )
+        questions = question_paper.related_questions.all()
+
+        for data in file_data:
+            user = User.objects.get(username=data["username"])
+            UserQuestionMarkTracker.objects.filter(
+                user=user, question__in=questions
+            ).delete()
+
+            marks_obtained: list = data["other_excel_data"]
+
+            for question_index in range(0, len(questions)):
+                question = questions[question_index]
+                mark: Union[None, int] = marks_obtained[question_index]
+                UserQuestionMarkTracker.objects.create(
+                    user=user, question=question, mark=mark
+                )
+
+        return Response(data=None)
 
     def init_params_for_view(self, request):
         """Checks the necessary params and returns a tuple (is_success, error_response)"""

@@ -1,4 +1,4 @@
-from rest_framework.serializers import ModelSerializer
+from rest_framework import serializers
 
 from exam_analyser.examination.models import (
     Subject,
@@ -9,7 +9,7 @@ from exam_analyser.examination.models import (
 )
 
 
-class SubjectSerializer(ModelSerializer):
+class SubjectSerializer(serializers.ModelSerializer):
     """Serializer to handle CRUD operations for the subject model."""
 
     class Meta:
@@ -17,7 +17,7 @@ class SubjectSerializer(ModelSerializer):
         fields = ["id", "name"]
 
 
-class ExamSerializer(ModelSerializer):
+class ExamSerializer(serializers.ModelSerializer):
     """Serializer to handle CRUD operations for the Exam model."""
 
     class Meta:
@@ -25,7 +25,7 @@ class ExamSerializer(ModelSerializer):
         fields = ["id", "name"]
 
 
-class QuestionCategorySerializer(ModelSerializer):
+class QuestionCategorySerializer(serializers.ModelSerializer):
     """Serializer to handle CRUD operations for the QuestionCategory model."""
 
     class Meta:
@@ -33,7 +33,7 @@ class QuestionCategorySerializer(ModelSerializer):
         fields = ["id", "name", "subject"]
 
 
-class QuestionPaperSerializer(ModelSerializer):
+class QuestionPaperSerializer(serializers.ModelSerializer):
     """Serializer to handle CRUD operations for the QuestionPaper model."""
 
     class Meta:
@@ -52,7 +52,7 @@ class QuestionPaperSerializer(ModelSerializer):
         return data
 
 
-class QuestionSerializer(ModelSerializer):
+class QuestionSerializer(serializers.ModelSerializer):
     """Serializer to handle CRUD operations for the Question model."""
 
     class Meta:
@@ -65,3 +65,12 @@ class QuestionSerializer(ModelSerializer):
             "question_paper",
             "max_marks",
         ]
+
+
+class MarksUploadSerializer(serializers.Serializer):
+    """Serializer to handle the input file for the QuestionPaperMarksUploadView on POST."""
+
+    file = serializers.FileField()
+
+    class Meta:
+        fields = ["file"]

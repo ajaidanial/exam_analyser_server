@@ -62,3 +62,18 @@ class Question(BaseModel):
         to="examination.QuestionPaper", on_delete=models.CASCADE
     )
     max_marks = models.PositiveIntegerField()
+
+
+class UserQuestionMarkTracker(BaseModel):
+    """
+    This model keeps track of the mark obtained by the user for a given question.
+    This is created from the UploadMarkView.
+    """
+
+    class Meta(BaseModel.Meta):
+        unique_together = ("user", "question")
+        default_related_name = "related_mark_trackers"
+
+    user = models.ForeignKey(to="authentication.User", on_delete=models.CASCADE)
+    question = models.ForeignKey(to="examination.Question", on_delete=models.CASCADE)
+    mark = models.PositiveIntegerField(null=True)

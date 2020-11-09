@@ -4,6 +4,7 @@ from csv import DictWriter
 from typing import List
 
 import pandas
+import xlrd
 from django.conf import settings
 from django.db.models import QuerySet
 from pandas import ExcelWriter
@@ -203,3 +204,88 @@ def write_data_to_excel_and_get_public_url(input_data: list, request) -> str:
         data_list=[clean_data_to_write], is_temporary_file=True
     )
     return f"{base_media_url}{file_media_path}"
+
+
+def clean_excel_input(input_data):
+    """Simple cleaning for the excel data. Converts raw excel data to python data."""
+
+    data = input_data
+
+    if type(data) == float:
+        data = str(data).split(".")[0]
+
+    data = str(data).strip()
+
+    if data.lower() == "false":
+        data = False
+    if data.lower() == "true":
+        data = True
+    if data == "" or len(data) <= 0:
+        return None
+
+    return data
+
+
+def get_data_as_list_of_dict_from_excel_file(
+    excel_file_config: dict,
+    input_indexes_and_dict_keys: dict,
+    excel_sheet_index: int = 0,
+    starting_row: int = 1,
+    extra_keys_and_values: dict = None,
+    key_and_function={},
+    read_other_excel_data=False,
+):
+    """
+    Reads a given excel sheet. Cleans it and performs small operations.
+    Stores the data as a list of dict and returns it. When read_other_excel_data is passed as True,
+    this function will get the other data passed in the excel sheet as an input list and passes it as
+    `other_excel_data` key in the single_dict.
+
+    @params:
+        input_indexes_and_dict_keys:    -> A dict to specify index of input and key of output dict
+        extra_keys_and_values:          -> Add extra keys and values, to the output, if necessary
+        excel_sheet_index:              -> Sheet in the excel sheet where the data is present | this is an integer
+        starting_row:                   -> Row in the sheet to start getting to data | for omitting the headings | int
+        excel_file_config               -> Contains file config that can be read, this contains the input data
+    """
+
+    print("Reading file...")
+    wb = xlrd.open_workbook(**excel_file_config)
+    sheet = wb.sheet_by_index(excel_sheet_index)
+    sheet.cell_value(0, 0)
+    nr = sheet.nrows
+
+    output_list = []
+    print("Reading data...")
+    for row in range(starting_row, nr):
+        data_dict = {}
+        for col_index, dict_key in input_indexes_and_dict_keys.items():
+            single_col_data = sheet.cell_value(row, col_index)
+
+            # clean a few things
+            single_col_data = clean_excel_input(single_col_data)
+
+            # pass the value to func, if passed
+            if dict_key in key_and_function.keys():
+                single_col_data = key_and_function[dict_key](single_col_data)
+
+            data_dict[dict_key] = single_col_data
+
+        # add extra key values,
+        if extra_keys_and_values:
+            for key, value in extra_keys_and_values.items():
+                if key not in data_dict.keys():
+                    data_dict[key] = value
+
+        if read_other_excel_data:
+            # if the other columns data are also to be read
+            other_excel_data = []
+            for other_index in range(len(input_indexes_and_dict_keys), sheet.ncols):
+                single_col_data = sheet.cell_value(row, other_index)
+                other_excel_data.append(clean_excel_input(single_col_data))
+            data_dict["other_excel_data"] = other_excel_data
+
+        # add to output list
+        output_list.append(data_dict)
+    print("Data read...")
+    return output_list

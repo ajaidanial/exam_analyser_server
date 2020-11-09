@@ -20,4 +20,4 @@ class BaseModel(TimeStampedModel, models.Model):
 
         for _ in AVAILABLE_DISPLAY_NAMES:
             if hasattr(self, _):
-                return getattr(self, _)
+                return str(getattr(self, _))
