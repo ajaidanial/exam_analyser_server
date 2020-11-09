@@ -22,7 +22,6 @@ class CheckParamsMixin:
 
         for query_param, options in self.query_params_dict.items():
             option = params_dict.get(query_param, None)
-            breakpoint()
             if not option:
                 raise NotAcceptable(
                     detail=f"This parameter is required: {query_param}."

@@ -29,4 +29,9 @@ urlpatterns = [
         views.DashboardDataAPIView.as_view(),
         name="dashboard_insights_view",
     ),
+    path(
+        "marks-upload/",
+        views.QuestionPaperMarksUploadView.as_view(),
+        name="marks_upload_view",
+    ),
 ] + router.urls

@@ -4,6 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 
 from exam_analyser.authentication.models import User
+from exam_analyser.base.views import CheckParamsMixin
 from exam_analyser.examination.models import (
     Subject,
     Exam,
@@ -130,3 +131,27 @@ class DashboardDataAPIView(APIView):
             },
         ]
         return Response(data=output_data)
+
+
+class QuestionPaperMarksUploadView(CheckParamsMixin, APIView):
+    """
+    This view does two things:
+        1. Updates the students marks under a given question paper and a question on POST request
+        2. On get request, returns the upload help file for the POST request.
+    """
+
+    def get(self, request, **kwargs):
+        """On get, returns the upload help file used for the post request."""
+
+        self.init_params_for_view(request)
+        return Response(data={})
+
+    def init_params_for_view(self, request):
+        """Checks the necessary params and returns a tuple (is_success, error_response)"""
+
+        self.query_params_dict = {
+            "question_paper_id": list(
+                QuestionPaper.objects.values_list("id", flat=True)
+            )
+        }
+        self.check_params(request)
