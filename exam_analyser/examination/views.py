@@ -210,7 +210,11 @@ class QuestionPaperMarksUploadView(CheckParamsMixin, APIView):
 
             for question_index in range(0, len(questions)):
                 question = questions[question_index]
-                mark: Union[None, int] = marks_obtained[question_index]
+                mark: Union[None, int] = (
+                    marks_obtained[question_index]
+                    if len(marks_obtained) > question_index
+                    else None
+                )
                 UserQuestionMarkTracker.objects.create(
                     user=user, question=question, mark=mark
                 )
