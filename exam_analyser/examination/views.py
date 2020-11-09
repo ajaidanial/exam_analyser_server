@@ -55,7 +55,7 @@ class QuestionPaperViewSet(ModelViewSet):
     """ViewSet to handle the CRUD operations for the QuestionPaper model."""
 
     serializer_class = QuestionPaperSerializer
-    queryset = QuestionPaper.objects.all()
+    queryset = QuestionPaper.objects.prefetch_related("related_questions")
 
 
 class QuestionViewSet(ModelViewSet):

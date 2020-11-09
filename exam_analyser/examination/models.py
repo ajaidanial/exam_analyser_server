@@ -73,6 +73,7 @@ class UserQuestionMarkTracker(BaseModel):
     class Meta(BaseModel.Meta):
         unique_together = ("user", "question")
         default_related_name = "related_mark_trackers"
+        ordering = ["user", "-question"]
 
     user = models.ForeignKey(to="authentication.User", on_delete=models.CASCADE)
     question = models.ForeignKey(to="examination.Question", on_delete=models.CASCADE)

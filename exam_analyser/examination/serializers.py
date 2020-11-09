@@ -1,11 +1,13 @@
 from rest_framework import serializers
 
+from exam_analyser.authentication.models import User
 from exam_analyser.examination.models import (
     Subject,
     Exam,
     QuestionCategory,
     QuestionPaper,
     Question,
+    UserQuestionMarkTracker,
 )
 
 
@@ -48,6 +50,26 @@ class QuestionPaperSerializer(serializers.ModelSerializer):
             data["related_questions"] = QuestionSerializer(
                 instance.related_questions.all(), context=self.context, many=True
             ).data
+
+        if request.query_params.get("show-user-report", False):
+            entire_trackers = UserQuestionMarkTracker.objects.filter(
+                question__in=instance.related_questions.all()
+            )
+            users = User.objects.filter(role="student")
+            entire_users_report = []
+
+            for user in users:
+                user_trackers = entire_trackers.filter(user=user)
+                single_user_report = {"name": user.username}
+
+                for tracker_index in range(0, len(user_trackers)):
+                    single_user_report[tracker_index] = user_trackers[
+                        tracker_index
+                    ].mark
+
+                entire_users_report.append(single_user_report)
+
+            data["users_report"] = entire_users_report
 
         return data
 
