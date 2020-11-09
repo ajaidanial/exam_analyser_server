@@ -5,6 +5,7 @@ from rest_framework.viewsets import ModelViewSet
 
 from exam_analyser.authentication.models import User
 from exam_analyser.base.views import CheckParamsMixin
+from exam_analyser.examination.helpers import write_data_to_excel_and_get_public_url
 from exam_analyser.examination.models import (
     Subject,
     Exam,
@@ -144,7 +145,25 @@ class QuestionPaperMarksUploadView(CheckParamsMixin, APIView):
         """On get, returns the upload help file used for the post request."""
 
         self.init_params_for_view(request)
-        return Response(data={})
+        question_paper = QuestionPaper.objects.get(
+            id=request.query_params.get("question_paper_id")
+        )
+        questions = question_paper.related_questions.all()
+        students = User.objects.filter(role="student")
+        data_to_write_in_excel = []
+
+        for student in students:
+            student_data = {"username": student.username}
+
+            for question_index in range(0, len(questions)):
+                student_data[f"Q.NO {question_index + 1}"] = ""
+
+            data_to_write_in_excel.append(student_data)
+
+        public_url = write_data_to_excel_and_get_public_url(
+            data_to_write_in_excel, request
+        )
+        return Response(data={"url": public_url})
 
     def init_params_for_view(self, request):
         """Checks the necessary params and returns a tuple (is_success, error_response)"""
