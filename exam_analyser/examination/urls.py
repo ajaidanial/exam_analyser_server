@@ -23,5 +23,10 @@ urlpatterns = [
         "exam-subject-overview/",
         views.ExamSubjectOverviewView.as_view(),
         name="exam_subject_overview_view",
-    )
+    ),
+    path(
+        "dashboard-insights/",
+        views.DashboardDataAPIView.as_view(),
+        name="dashboard_insights_view",
+    ),
 ] + router.urls

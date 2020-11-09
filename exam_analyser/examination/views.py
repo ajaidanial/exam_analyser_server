@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 
+from exam_analyser.authentication.models import User
 from exam_analyser.examination.models import (
     Subject,
     Exam,
@@ -102,3 +103,30 @@ class ExamSubjectOverviewView(APIView):
 
     def get_serializer_context(self):
         return {"view": self, "request": self.request}
+
+
+class DashboardDataAPIView(APIView):
+    """Returns the data necessary for the users dashboard cards."""
+
+    def get(self, request, **kwargs):
+        output_data = [
+            {"display_name": "Subjects Count", "value": Subject.objects.all().count()},
+            {
+                "display_name": "Teachers Count",
+                "value": User.objects.filter(role="teacher").count(),
+            },
+            {
+                "display_name": "Students Count",
+                "value": User.objects.filter(role="student").count(),
+            },
+            {"display_name": "Exams Count", "value": Exam.objects.all().count()},
+            {
+                "display_name": "Question Papers Count",
+                "value": QuestionPaper.objects.all().count(),
+            },
+            {
+                "display_name": "Categories Count",
+                "value": QuestionCategory.objects.all().count(),
+            },
+        ]
+        return Response(data=output_data)
