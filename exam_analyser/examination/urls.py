@@ -34,4 +34,9 @@ urlpatterns = [
         views.QuestionPaperMarksUploadView.as_view(),
         name="marks_upload_view",
     ),
+    path(
+        "report-cards/",
+        views.UserReportCardView.as_view(),
+        name="report_cards_view",
+    ),
 ] + router.urls

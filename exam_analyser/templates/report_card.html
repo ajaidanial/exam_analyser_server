@@ -1,0 +1,71 @@
+<head>
+    <title> Student Report Card </title>
+</head>
+
+<body>
+    <style>
+        html {
+            font-family: arial;
+            font-size: 18px;
+        }
+
+        td {
+            border: 1px solid #726E6D;
+            padding: 15px;
+        }
+
+        thead {
+            font-weight: bold;
+            text-align: center;
+            background: #625D5D;
+            color: white;
+        }
+
+        table {
+            border-collapse: collapse;
+        }
+
+        .footer {
+            text-align: right;
+            font-weight: bold;
+        }
+
+        tbody>tr:nth-child(odd) {
+            background: #D1D0CE;
+        }
+
+        .center {
+            margin: 0;
+            position: absolute;
+            top: 10%;
+            left: 50%;
+            -ms-transform: translate(-50%, -10%);
+            transform: translate(-50%, -10%);
+        }
+    </style>
+    <div class="center">
+        <p>Name: Ajai Danial</p>
+        <p>Login: Ajai Danial</p>
+        <table>
+            <thead>
+                <tr>
+                    <td>Exam Name</td>
+                    <td>Total Marks Obtained</td>
+                    <td>Grade</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>HalfYearly</td>
+                    <td>12</td>
+                    <td>F</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td class="footer">Total</td>
+                    <td colspan="2">15.0</td>
+                </tr>
+        </table>
+    </div>
+</body>

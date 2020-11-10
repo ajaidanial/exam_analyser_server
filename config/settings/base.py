@@ -151,7 +151,7 @@ MEDIA_URL = "/media/"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        # "DIRS": [str(APPS_DIR / "templates")],
+        "DIRS": [str(APPS_DIR / "templates")],
         "OPTIONS": {
             "loaders": [
                 "django.template.loaders.filesystem.Loader",
