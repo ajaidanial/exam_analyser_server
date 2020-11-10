@@ -269,7 +269,13 @@ class UserReportCardView(DetailView):
                 # total mark calculation
                 total_marks += mark
 
-            exam_marks_data.append({"exam": exam.name, "mark": mark, "grade": grade})
+            exam_marks_data.append(
+                {
+                    "exam": exam.name,
+                    "mark": mark if mark else "-",
+                    "grade": grade if mark else "-",
+                }
+            )
 
         # remark calculation
         remarks = "Very Poor"
