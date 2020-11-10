@@ -7,7 +7,7 @@ if ! [ -x "$(command -v docker-compose)" ]; then
 fi
 
 # init configuration
-domains=(testing.ajaidanial.wtf)
+domains=(app.madhumithaa.xyz)
 rsa_key_size=4096
 data_path="./compose/certbot"
 email="ajaidanial@gmail.com"
