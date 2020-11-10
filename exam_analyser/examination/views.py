@@ -1,6 +1,10 @@
+from io import BytesIO
 from typing import Union
 
+import xhtml2pdf.pisa as pisa
 from django.db.models import Sum
+from django.http import HttpResponse
+from django.template.loader import get_template
 from django.views.generic import DetailView
 from rest_framework import status
 from rest_framework.parsers import MultiPartParser, FormParser
@@ -287,3 +291,13 @@ class UserReportCardView(DetailView):
         )
 
         return data
+
+    def get(self, request, *args, **kwargs):
+        """Renders the report card as a pdf, so that the user can download it directly."""
+
+        self.object = self.get_object()
+        template = get_template(self.template_name)
+        html = template.render(self.get_context_data())
+        response = BytesIO()
+        pisa.pisaDocument(BytesIO(html.encode("UTF-8")), response)
+        return HttpResponse(response.getvalue(), content_type="application/pdf")
