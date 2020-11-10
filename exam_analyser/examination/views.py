@@ -1,6 +1,6 @@
 from typing import Union
 
-from django.views.generic import TemplateView
+from django.views.generic import DetailView
 from rest_framework import status
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.response import Response
@@ -233,7 +233,8 @@ class QuestionPaperMarksUploadView(CheckParamsMixin, APIView):
         self.check_params(request)
 
 
-class UserReportCardView(TemplateView):
+class UserReportCardView(DetailView):
     """View to display the students report card to the user."""
 
     template_name = "report_card.html"
+    queryset = User.objects.filter(role="student")

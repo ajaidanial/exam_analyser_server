@@ -35,7 +35,7 @@ urlpatterns = [
         name="marks_upload_view",
     ),
     path(
-        "report-cards/",
+        "<str:pk>/report-card/",
         views.UserReportCardView.as_view(),
         name="report_cards_view",
     ),
