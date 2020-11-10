@@ -44,8 +44,8 @@
     }
   </style>
   <div class="center">
-    <p>Name: Ajai Danial</p>
-    <p>Login: Ajai Danial</p>
+    <p>Name: {{ name }}</p>
+    <p>Login: {{ username }}</p>
     <table>
       <thead>
         <tr>
@@ -55,16 +55,22 @@
         </tr>
       </thead>
       <tbody>
+        {% for mark_data in report_data %}
         <tr>
-          <td>HalfYearly</td>
-          <td>12</td>
-          <td>F</td>
+          <td>{{ mark_data.exam }}</td>
+          <td>{{ mark_data.mark }}</td>
+          <td>{{ mark_data.grade }}</td>
         </tr>
+        {% endfor %}
       </tbody>
       <tfoot>
         <tr>
           <td class="footer">Total</td>
-          <td colspan="2">15.0</td>
+          <td colspan="2">{{ total_marks }}</td>
+        </tr>
+        <tr>
+          <td class="footer">Remarks</td>
+          <td colspan="2">{{ remarks }}</td>
         </tr>
     </table>
   </div>

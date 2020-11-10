@@ -1,5 +1,6 @@
 from typing import Union
 
+from django.db.models import Sum
 from django.views.generic import DetailView
 from rest_framework import status
 from rest_framework.parsers import MultiPartParser, FormParser
@@ -238,3 +239,51 @@ class UserReportCardView(DetailView):
 
     template_name = "report_card.html"
     queryset = User.objects.filter(role="student")
+
+    def get_context_data(self, **kwargs):
+        data = super(UserReportCardView, self).get_context_data(**kwargs)
+
+        user_instance = self.get_object()
+        exam_marks_data = []
+        total_marks = 0
+
+        for exam in Exam.objects.all():
+            # mark calculation
+            mark = UserQuestionMarkTracker.objects.filter(
+                question__question_paper__exam=exam, mark__isnull=False
+            ).aggregate(mark_sum=Sum("mark"))["mark_sum"]
+
+            # grade calculation
+            grade = "F"
+            if mark:
+                if mark > 40:
+                    grade = "C"
+                if mark > 60:
+                    grade = "B"
+                if mark > 80:
+                    grade = "A"
+                # total mark calculation
+                total_marks += mark
+
+            exam_marks_data.append({"exam": exam.name, "mark": mark, "grade": grade})
+
+        # remark calculation
+        remarks = "Very Poor"
+        if total_marks > 40:
+            remarks = "Poor"
+        if total_marks > 60:
+            remarks = "Good"
+        if total_marks > 80:
+            remarks = "Very Good"
+
+        data.update(
+            {
+                "remarks": remarks,
+                "report_data": exam_marks_data,
+                "total_marks": total_marks,
+                "name": user_instance.get_full_name(),
+                "username": user_instance.username,
+            }
+        )
+
+        return data
