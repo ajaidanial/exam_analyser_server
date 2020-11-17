@@ -310,6 +310,9 @@ class UserReportCardView(DetailView):
                         if questions.count() > max_questions_in_exam:
                             max_questions_in_exam = questions.count()
 
+                        bad_category = None
+                        bad_mark = None
+
                         for question in questions:
                             mark_qs = UserQuestionMarkTracker.objects.filter(
                                 user=self.get_object(), question=question
@@ -319,12 +322,27 @@ class UserReportCardView(DetailView):
                             )
                             subject_marks_data.append(mark_obtained)
 
+                            if mark_qs.exists():
+                                category = (
+                                    question.question_categories.first().name
+                                    if question.question_categories.exists()
+                                    else "-"
+                                )
+                                if not bad_mark or bad_mark > mark_qs.first().mark:
+                                    bad_mark = mark_qs.first().mark
+                                    bad_category = category
+
+                        if bad_category:
+                            subject_marks_data.append(
+                                f"Can do better in {bad_category}"
+                            )
+
                     subject_data.append(subject_marks_data)
 
                 for subject_single_data in subject_data:
-                    if len(subject_single_data) < max_questions_in_exam:
+                    if len(subject_single_data) < (max_questions_in_exam + 2):
                         for _ in range(
-                            len(subject_single_data) - 1, max_questions_in_exam
+                            len(subject_single_data), (max_questions_in_exam + 2)
                         ):
                             subject_single_data.append("-")
 
@@ -332,6 +350,8 @@ class UserReportCardView(DetailView):
 
                 for _ in range(0, max_questions_in_exam):
                     other_report_card_data[exam.name]["header_data"].append(f"Q{_ + 1}")
+
+                other_report_card_data[exam.name]["header_data"].append(f"Remarks")
 
         data.update(
             {
