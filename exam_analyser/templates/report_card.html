@@ -45,6 +45,8 @@
   <div class="center">
     <p>Name: {{ name }}</p>
     <p>Login: {{ username }}</p>
+    <hr />
+    <p>Overview</p>
     <table>
       <thead>
         <tr>
@@ -72,5 +74,29 @@
           <td colspan="2">{{ remarks }}</td>
         </tr>
     </table>
+
+    {% for exam, exam_data in other_report_card_data.items %}
+    <hr />
+    <p>{{ exam }}</p>
+    <table>
+      <thead>
+        <tr>
+          {% for header in exam_data.header_data %}
+          <td>{{ header }}</td>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for subject_data in exam_data.subject_data %}
+        <tr>
+          {% for single_data in subject_data %}
+          <td>{{ single_data }}</td>
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% endfor %}
+
   </div>
 </body>

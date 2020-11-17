@@ -286,6 +286,53 @@ class UserReportCardView(DetailView):
         if total_marks > 80:
             remarks = "Very Good"
 
+        # for other report card data | for individual subjects
+        other_report_card_data = {}
+        for exam in Exam.objects.all():
+
+            if Question.objects.filter(question_paper__exam=exam).exists():
+
+                other_report_card_data[exam.name] = {
+                    "header_data": ["Questions"],
+                    "subject_data": [],
+                }
+                max_questions_in_exam = 0
+                subject_data = []
+
+                for subject in Subject.objects.all():
+                    subject_marks_data = [subject.name]
+                    questions = Question.objects.filter(
+                        question_paper__subject=subject, question_paper__exam=exam
+                    )
+
+                    if questions.exists():
+
+                        if questions.count() > max_questions_in_exam:
+                            max_questions_in_exam = questions.count()
+
+                        for question in questions:
+                            mark_qs = UserQuestionMarkTracker.objects.filter(
+                                user=self.get_object(), question=question
+                            )
+                            mark_obtained = (
+                                mark_qs.first().mark if mark_qs.exists() else 0
+                            )
+                            subject_marks_data.append(mark_obtained)
+
+                    subject_data.append(subject_marks_data)
+
+                for subject_single_data in subject_data:
+                    if len(subject_single_data) < max_questions_in_exam:
+                        for _ in range(
+                            len(subject_single_data) - 1, max_questions_in_exam
+                        ):
+                            subject_single_data.append("-")
+
+                other_report_card_data[exam.name]["subject_data"] = subject_data
+
+                for _ in range(0, max_questions_in_exam):
+                    other_report_card_data[exam.name]["header_data"].append(f"Q{_ + 1}")
+
         data.update(
             {
                 "remarks": remarks,
@@ -293,6 +340,7 @@ class UserReportCardView(DetailView):
                 "total_marks": total_marks,
                 "name": user_instance.get_full_name(),
                 "username": user_instance.username,
+                "other_report_card_data": other_report_card_data,
             }
         )
 
